@@ -1,0 +1,16 @@
+{
+  "name": "minpage",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --sourcemap --outfile=public/build/index.js",
+    "start": "esbuild src/index.ts --bundle --sourcemap --outfile=public/build/index.js --servedir=public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.3"
+  }
+}
