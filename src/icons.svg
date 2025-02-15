@@ -1,0 +1,32 @@
+<svg viewBox="0 0 1700 256" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="black" stroke-width="6">
+        <!-- Each icon is 256x256 with a 32 spacing between (288 offset) -->
+        <g>
+            <circle cx="128" cy="128" r="116" />
+            <path d="M60,128 l55,-32 l0,64 z" fill="black" />
+            <path d="M122,128 l55,-32 l0,64 z" fill="black" />
+        </g>
+        <g transform="translate(288)">
+            <circle cx="128" cy="128" r="116" />
+            <path d="M99 80 l16 0 l0 96 l-16 0 z" fill="black"/>
+            <path d="M141 80 l16 0 l0 96 l-16 0 z" fill="black"/>
+        </g>
+        <g transform="translate(576)">
+            <circle cx="128" cy="128" r="116" />
+            <path d="M180,128 l-83,-47 l0,96 z" fill="black" />
+        </g>
+        <g transform="translate(864)">
+            <circle cx="128" cy="128" r="116" />
+            <path d="M196,128 l-55,-32 l0,64 z" fill="black" />
+            <path d="M134,128 l-55,-32 l0,64 z" fill="black" />
+        </g>
+        <g transform="translate(1152)">
+            <circle cx="128" cy="128" r="116" />
+            <path d="M68 144 l60 -50 l60 50" fill="none" stroke-width="20" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <g transform="translate(1440)">
+            <circle cx="128" cy="128" r="116" />
+            <path d="M68 112 l60 50 l60 -50" fill="none" stroke-width="20" stroke="black" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+    </g>
+</svg>

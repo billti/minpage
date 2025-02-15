@@ -3,22 +3,106 @@
 [data-theme="light"] {
   --minpage-primay-color: #222;
   --minpage-background-color: #eee;
+  --minpage-qubitbox: #bbd;
+  --minpage-qubit: #123;
 }
 /* User has set OS preference for dark (explict theme will override) */
 @media (prefers-color-scheme: dark) {
   :root {
     --minpage-primay-color: #eee;
     --minpage-background-color: #222;
+    --minpage-qubitbox: #446;
+  --minpage-qubit: #9df;
   }
 }
 /* Explicit dark theme set (should match above dark preference values) */
 [data-theme="dark"] {
   --minpage-primay-color: #eee;
   --minpage-background-color: #222;
+  --minpage-qubitbox: #446;
+  --minpage-qubit: #9df;
 }
 
 .minpage-body {
   background-color: var(--minpage-background-color);
   color: var(--minpage-primay-color);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.minpage-app {
+  width: 640px;
+  border: 1px solid gray;
+  border-radius: 8px;
+  margin: auto;
+  margin-top: 24px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.minpage-toolstrip {
+  display: flex;
+  align-items: center;
+}
+
+.minpage-toolbar {
+  height: 32px;
+  user-select: none;
+}
+
+.minpage-icon > circle {
+  stroke: var(--minpage-primay-color);
+  stroke-width: 6;
+  fill: transparent;
+  cursor: pointer;
+}
+
+.minpage-icon > circle:hover {
+  stroke-width: 10;
+}
+
+.minpage-icon > path {
+  stroke: none;
+  fill: var(--minpage-primay-color);
+  pointer-events: none;
+}
+
+.minpage-icon > .minpage-icon-line {
+  fill: none;
+  stroke-width: 16;
+  stroke: var(--minpage-primay-color);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.minpage-step {
+  min-width: 128px;
+  text-align: end;
+  margin: 0 20px;
+}
+
+.minpage-bigsmall {
+  margin-left: auto;
+}
+
+.minpage-zones {
+  margin: 16px auto;
+}
+
+.minpage-zone-text {
+  font-size: 6px;
+  font-family: "Helvetica";
+  fill: gray;
+  stroke-width: 0;
+}
+
+.minpage-zonebox {
+  stroke: var(--minpage-background-color);
+  stroke-width: 0.75;
+  fill: var(--minpage-qubitbox);
+}
+
+.minpage-qubit {
+  stroke: none;
+  fill: var(--minpage-qubit);
 }

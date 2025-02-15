@@ -1,0 +1,39 @@
+<svg viewBox="-5 0 90 110" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="white" stroke-width="0.75" fill="#bbd" transform="translate(0,10)">
+        <rect x="0" y="0" width="80" height="20" rx="3" />
+        <path d="M0,10 h80" />
+        <path d="M10,0 v20" />
+        <path d="M20,0 v20" />
+        <path d="M30,0 v20" />
+        <path d="M40,0 v20" />
+        <path d="M50,0 v20" />
+        <path d="M60,0 v20" />
+        <path d="M70,0 v20" />
+    </g>
+    <text x="1" y="9" font-size="7" font-family="Helvetica" fill="gray">Readout</text>
+    <g stroke="white" stroke-width="0.75" fill="#bbd" transform="translate(0,40)">
+        <rect x="0" y="0" width="20" height="10" rx="3" />
+        <path d="M10,0 v10" />
+        <rect x="20" y="0" width="20" height="10" rx="3" />
+        <path d="M30,0 v10" />
+        <rect x="40" y="0" width="20" height="10" rx="3" />
+        <path d="M50,0 v10" />
+        <rect x="60" y="0" width="20" height="10" rx="3" />
+        <path d="M70,0 v10" />
+    </g>
+    <text x="1" y="39" font-size="7" font-family="Helvetica" fill="gray">Interaction</text>
+    <g stroke="white" stroke-width="0.75" fill="#bbd" transform="translate(0,60)">
+        <rect x="0" y="0" width="80" height="40" rx="3" />
+        <path d="M0,10 h80" />
+        <path d="M0,20 h80" />
+        <path d="M0,30 h80" />
+        <path d="M10,0 v40" />
+        <path d="M20,0 v40" />
+        <path d="M30,0 v40" />
+        <path d="M40,0 v40" />
+        <path d="M50,0 v40" />
+        <path d="M60,0 v40" />
+        <path d="M70,0 v40" />
+    </g>
+    <text x="1" y="59" font-size="7" font-family="Helvetica" fill="gray">Storage</text>
+</svg>

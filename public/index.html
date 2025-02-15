@@ -8,7 +8,105 @@
     <title>minpage</title>
   </head>
   <body class="minpage-body">
-    TODO
+    <div class="minpage-app" id="app">
+      <div class="minpage-toolstrip">
+        <svg
+          class="minpage-toolbar"
+          viewBox="0 0 1120 256"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g fill="none">
+            <g class="minpage-icon" transform="translate(0)">
+              <circle cx="128" cy="128" r="116" data-control="prev" />
+              <path d="M60,128 l55,-32 l0,64 z" />
+              <path d="M122,128 l55,-32 l0,64 z" />
+            </g>
+            <g class="minpage-icon" transform="translate(288)">
+              <circle cx="128" cy="128" r="116" data-control="pause" />
+              <path d="M99 80 l16 0 l0 96 l-16 0 z" />
+              <path d="M141 80 l16 0 l0 96 l-16 0 z" />
+            </g>
+            <g class="minpage-icon" transform="translate(576)">
+              <circle cx="128" cy="128" r="116" data-control="play" />
+              <path d="M180,128 l-83,-47 l0,96 z" />
+            </g>
+            <g class="minpage-icon" transform="translate(864)">
+              <circle cx="128" cy="128" r="116" data-control="next" />
+              <path d="M196,128 l-55,-32 l0,64 z" />
+              <path d="M134,128 l-55,-32 l0,64 z" />
+            </g>
+          </g>
+        </svg>
+        <div class="minpage-step">1280 / 9376</div>
+        <input
+          type="range"
+          class="minpage-slider"
+          id="slider"
+          min="0"
+          max="9376"
+          value="1280"
+        />
+        <div class="minpage-bigsmall">
+          <svg class="minpage-toolbar" viewBox="0 0 544 256">
+            <g class="minpage-icon">
+              <circle cx="128" cy="128" r="116" />
+              <path class="minpage-icon-line" d="M68 144 l60 -50 l60 50" />
+            </g>
+            <g class="minpage-icon" transform="translate(288)">
+              <circle cx="128" cy="128" r="116" />
+              <path class="minpage-icon-line" d="M68 112 l60 50 l60 -50" />
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="minpage-zones">
+        <svg
+          viewBox="-5 0 90 110"
+          width="306"
+          height="374"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g class="minpage-zonebox" transform="translate(0,10)">
+            <rect x="0" y="0" width="80" height="20" rx="3" />
+            <path d="M0,10 h80" />
+            <path d="M10,0 v20" />
+            <path d="M20,0 v20" />
+            <path d="M30,0 v20" />
+            <path d="M40,0 v20" />
+            <path d="M50,0 v20" />
+            <path d="M60,0 v20" />
+            <path d="M70,0 v20" />
+            <text x="1" y="-1" class="minpage-zone-text">Readout</text>
+          </g>
+          <g class="minpage-zonebox" transform="translate(0,40)">
+            <rect x="0" y="0" width="20" height="10" rx="3" />
+            <path d="M10,0 v10" />
+            <rect x="20" y="0" width="20" height="10" rx="3" />
+            <path d="M30,0 v10" />
+            <rect x="40" y="0" width="20" height="10" rx="3" />
+            <path d="M50,0 v10" />
+            <rect x="60" y="0" width="20" height="10" rx="3" />
+            <path d="M70,0 v10" />
+            <text x="1" y="-1" class="minpage-zone-text">Interaction</text>
+          </g>
+          <g class="minpage-zonebox" transform="translate(0,60)">
+            <rect x="0" y="0" width="80" height="40" rx="3" />
+            <path d="M0,10 h80" />
+            <path d="M0,20 h80" />
+            <path d="M0,30 h80" />
+            <path d="M10,0 v40" />
+            <path d="M20,0 v40" />
+            <path d="M30,0 v40" />
+            <path d="M40,0 v40" />
+            <path d="M50,0 v40" />
+            <path d="M60,0 v40" />
+            <path d="M70,0 v40" />
+            <text x="1" y="-1" class="minpage-zone-text">Storage</text>
+          </g>
+          <circle class="minpage-qubit" cx="5" cy="65" r="2" />
+        </svg>
+      </div>
+    </div>
     <script src="build/index.js"></script>
   </body>
 </html>
