@@ -1,15 +1,37 @@
 import "./index.css";
+import { Layout } from "./layout";
+
+const machineLayout = {
+  cols: 16,
+  readoutRows: 2,
+  interactionRows: 1,
+  storageRows: 16,
+}
 
 function render() {
-  const app: HTMLDivElement = document.getElementById("app") as HTMLDivElement;
+  // Render the layout
+  const layout = new Layout(machineLayout);
+  const zones = document.body.querySelector(".minpage-zones") as HTMLDivElement;
+  zones.appendChild(layout.container);
 
+  // Wire up the controls
+  const app: HTMLDivElement = document.getElementById("app") as HTMLDivElement;
   const next = document.querySelector(
     "[data-control='next']"
   ) as SVGCircleElement;
   const prev = document.querySelector(
     "[data-control='prev']"
   ) as SVGCircleElement;
+  const zoomIn = document.querySelector(
+    "[data-control='zoom-in']"
+  ) as SVGCircleElement;
+  const zoomOut = document.querySelector(
+    "[data-control='zoom-out']"
+  ) as SVGCircleElement;
   const qubit = document.querySelector(".minpage-qubit") as SVGCircleElement;
+
+  zoomIn.addEventListener("click", () => layout.zoomIn());
+  zoomOut.addEventListener("click", () => layout.zoomOut());
 
   next.addEventListener("click", () => {
     qubit

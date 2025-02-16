@@ -12,13 +12,13 @@
     </g>
     <text x="1" y="9" font-size="7" font-family="Helvetica" fill="gray">Readout</text>
     <g stroke="white" stroke-width="0.75" fill="#bbd" transform="translate(0,40)">
-        <rect x="0" y="0" width="20" height="10" rx="3" />
+        <rect x="0" y="0" width="20" height="10" rx="5" />
         <path d="M10,0 v10" />
-        <rect x="20" y="0" width="20" height="10" rx="3" />
+        <rect x="20" y="0" width="20" height="10" rx="5" />
         <path d="M30,0 v10" />
-        <rect x="40" y="0" width="20" height="10" rx="3" />
+        <rect x="40" y="0" width="20" height="10" rx="5" />
         <path d="M50,0 v10" />
-        <rect x="60" y="0" width="20" height="10" rx="3" />
+        <rect x="60" y="0" width="20" height="10" rx="5" />
         <path d="M70,0 v10" />
     </g>
     <text x="1" y="39" font-size="7" font-family="Helvetica" fill="gray">Interaction</text>
