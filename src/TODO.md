@@ -1,15 +1,13 @@
 # TODO
 
 - Figure out the config format for layout and trace
-- Figure out how to render each region (with title) and calculate its dimensions
-- Figure out how to draw the qubits (and number them)
-- Figure out the toolbar to pause, play, step, and scroll the timeline
-  - See <https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/textLength> for laying
-    out the `n / count` area (and the slider for scrubbing the timeline)
-  - Draw the toolbar controls using SVG icons for standard play/pause/prev/next controls
+- Number the rows and columns
+- Have a max zoom and make it centered and aligned with toolbar
+- Move zoom controls to left, player controls to center, and scrubber to the right
 - Figure out how to draw the operations on each qubit (including params)
+- Figure out status line and popup info for qubit hovering
 - Figure out how to move/animate qubits between regions
-- Figure out how to zoom with ctrl+mouse wheel or pinch gesture
+- Draw a from/to line when qubits move
 - Figure out how to show measurement results, qubit loss, and reloading
 - Figure out if/how to overlay noise or loss probabilities on qubits
 

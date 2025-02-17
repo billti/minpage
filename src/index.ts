@@ -1,3 +1,4 @@
+import { createPlayerControls, createScrubberControls, createZoomControls } from "./controls";
 import "./index.css";
 import { fillQubitLocations, Layout } from "./layout";
 
@@ -12,6 +13,19 @@ function render() {
   // Render the layout
   const qubits = fillQubitLocations(4, 6, 3);
   const layout = new Layout(machineLayout, qubits);
+
+  const zoomControls = createZoomControls();
+  zoomControls.classList.add("minpage-toolbar-left");
+
+  const playerControls = createPlayerControls();
+  const scrubberControls = createScrubberControls()
+
+  const toolstrip = document.body.querySelector(".minpage-toolstrip") as HTMLDivElement;
+  toolstrip.appendChild(zoomControls);
+  toolstrip.appendChild(scrubberControls);
+  toolstrip.appendChild(playerControls);
+
+
   const zones = document.body.querySelector(".minpage-zones") as HTMLDivElement;
   zones.appendChild(layout.container);
 
@@ -31,8 +45,19 @@ function render() {
   ) as SVGCircleElement;
   const qubit = document.querySelector(".minpage-qubit") as SVGCircleElement;
 
-  zoomIn.addEventListener("click", () => layout.zoomIn());
-  zoomOut.addEventListener("click", () => layout.zoomOut());
+  function setAppWidth() {
+    const newWidth = (layout.width * layout.scale) + 32;
+    newWidth > 600 ? app.style.width = `${newWidth}px` : app.style.width = "600px";
+  }
+
+  zoomIn.addEventListener("click", () => {
+    layout.zoomIn();
+    setAppWidth();
+  });
+  zoomOut.addEventListener("click", () => {
+    layout.zoomOut();
+    setAppWidth();
+  });
 
   next.addEventListener("click", () => {
     qubit

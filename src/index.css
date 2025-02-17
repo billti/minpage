@@ -30,7 +30,8 @@
 }
 
 .minpage-app {
-  width: 640px;
+  box-sizing: border-box;
+  width: 600px;
   border: 1px solid gray;
   border-radius: 8px;
   margin: auto;
@@ -48,6 +49,11 @@
 .minpage-toolbar {
   height: 32px;
   user-select: none;
+}
+
+.minpage-toolbar-left {
+  /* To make same size as right icons */
+  padding-right: 36px;
 }
 
 .minpage-icon > circle {
