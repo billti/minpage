@@ -1,5 +1,5 @@
 import "./index.css";
-import { Layout } from "./layout";
+import { fillQubitLocations, Layout } from "./layout";
 
 const machineLayout = {
   cols: 16,
@@ -10,7 +10,8 @@ const machineLayout = {
 
 function render() {
   // Render the layout
-  const layout = new Layout(machineLayout);
+  const qubits = fillQubitLocations(4, 6, 3);
+  const layout = new Layout(machineLayout, qubits);
   const zones = document.body.querySelector(".minpage-zones") as HTMLDivElement;
   zones.appendChild(layout.container);
 

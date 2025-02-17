@@ -7,6 +7,8 @@ type MachineLayout = {
   storageRows: number;
 };
 
+type Location = [number, number, SVGElement?];
+
 const qubitSize = 10;
 const zoneSpacing = 10;
 const colPadding = 10;
@@ -15,35 +17,51 @@ const scaleStep = 0.25;
 const zoneBoxCornerRadius = 3;
 const doublonCornerRadius = 5;
 
+export function fillQubitLocations(
+  rows: number,
+  cols: number,
+  startRow: number
+): Location[] {
+  const qubits: Location[] = [];
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      qubits.push([row + startRow, col]);
+    }
+  }
+  return qubits;
+}
+
 export class Layout {
   container: SVGSVGElement;
   width: number;
   height: number;
-  scale: number;
+  scale: number = initialScale;
 
-  constructor(private layout: MachineLayout) {
+  constructor(public layout: MachineLayout, public qubits: Location[] = []) {
     if (layout.interactionRows != 1) {
-        throw "Only 1 interaction row supported";
+      throw "Only 1 interaction row supported";
     }
     this.container = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "svg"
     );
-    this.scale = initialScale;
-    this.height =
-      (layout.readoutRows + layout.interactionRows + layout.storageRows) *
-        qubitSize +
-      zoneSpacing * 4;
+
+    const totalRows =
+      layout.readoutRows + layout.interactionRows + layout.storageRows;
+    this.height = totalRows * qubitSize + zoneSpacing * 4;
     this.width = layout.cols * qubitSize + colPadding;
+
     setAttributes(this.container, {
       viewBox: `-5 0 ${this.width} ${this.height}`,
       width: `${this.width * this.scale}px`,
       height: `${this.height * this.scale}px`,
     });
 
-    const readoutOffset = zoneSpacing;
-    const interactionOffset = 2 * zoneSpacing + layout.readoutRows * qubitSize;
-    const storageOffset = 3 * zoneSpacing + layout.readoutRows * qubitSize + layout.interactionRows * qubitSize;
+    const readoutOffset = this.getQubitRowOffset(0);
+    const interactionOffset = this.getQubitRowOffset(layout.readoutRows);
+    const storageOffset = this.getQubitRowOffset(
+      layout.readoutRows + layout.interactionRows
+    );
 
     this.renderZone(readoutOffset, "Readout", layout.readoutRows, layout.cols);
     this.renderDoublons(interactionOffset, "Interaction", layout.cols);
@@ -51,7 +69,7 @@ export class Layout {
     this.renderQubits();
   }
 
-  renderZone(offset: number, title: string, rows: number, cols: number) {
+  private renderZone(offset: number, title: string, rows: number, cols: number) {
     const g = createSvgElements("g")[0];
     setAttributes(g, {
       transform: `translate(0 ${offset})`,
@@ -98,7 +116,7 @@ export class Layout {
     appendChildren(this.container, [g]);
   }
 
-  renderDoublons(offset: number, title: string, cols: number) {
+  private renderDoublons(offset: number, title: string, cols: number) {
     const g = createSvgElements("g")[0];
     setAttributes(g, {
       transform: `translate(0 ${offset})`,
@@ -106,7 +124,7 @@ export class Layout {
     });
 
     // Draw each doublon
-    for (let i = 0; i < cols; i+=2) {
+    for (let i = 0; i < cols; i += 2) {
       const rect = createSvgElements("rect")[0];
       setAttributes(rect, {
         x: `${i * qubitSize}`,
@@ -135,20 +153,26 @@ export class Layout {
     appendChildren(this.container, [g]);
   }
 
-  renderQubits() {
-    // TODO
-    const circle = createSvgElements("circle")[0];
-    setAttributes(circle, {
-        "cx": "5",
-        "cy": "65",
-        "r": `2`,
-        "class": "minpage-qubit",
+  private renderQubits() {
+    const elems = this.qubits.map((location, index, array) => {
+      const [x, y] = this.getQubitCenter(index);
+
+      const circle = createSvgElements("circle")[0];
+      setAttributes(circle, {
+        cx: `${x}`,
+        cy: `${y}`,
+        r: `2`,
+        class: "minpage-qubit",
+      });
+      location[2] = circle;
+      return circle;
     });
-    appendChildren(this.container, [circle]);
+
+    appendChildren(this.container, elems);
   }
 
   zoomIn() {
-    this.scale += (scaleStep * this.scale);
+    this.scale += scaleStep * this.scale;
     setAttributes(this.container, {
       width: `${this.width * this.scale}px`,
       height: `${this.height * this.scale}px`,
@@ -156,10 +180,31 @@ export class Layout {
   }
 
   zoomOut() {
-    this.scale -= (scaleStep * this.scale);
+    this.scale -= scaleStep * this.scale;
     setAttributes(this.container, {
       width: `${this.width * this.scale}px`,
       height: `${this.height * this.scale}px`,
     });
+  }
+
+  getQubitRowOffset(row: number) {
+    if (row < this.layout.readoutRows) {
+      return zoneSpacing + row * qubitSize;
+    } else if (row < this.layout.readoutRows + this.layout.interactionRows) {
+      return 2 * zoneSpacing + row * qubitSize;
+    } else {
+      return 3 * zoneSpacing + row * qubitSize;
+    }
+  }
+
+  getQubitCenter(qubit: number): [number, number] {
+    if (this.qubits[qubit] == undefined) {
+      throw "Qubit not found";
+    }
+
+    const [row, col] = this.qubits[qubit];
+    const x = col * qubitSize + qubitSize / 2;
+    const y = this.getQubitRowOffset(row) + qubitSize / 2;
+    return [x, y];
   }
 }
