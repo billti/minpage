@@ -31,6 +31,21 @@ function render() {
 
   // Wire up the controls
   const app: HTMLDivElement = document.getElementById("app") as HTMLDivElement;
+  app.tabIndex = 0;
+  app.addEventListener("keydown", (e) => {
+    switch (e.key) {
+      case "ArrowRight":
+        e.preventDefault();
+        onNext();
+        break;
+      case "ArrowLeft":
+        e.preventDefault();
+        onPrev();
+        break;
+    }
+  });
+
+
   const next = document.querySelector(
     "[data-control='next']"
   ) as SVGCircleElement;
@@ -59,7 +74,9 @@ function render() {
     setAppWidth();
   });
 
-  next.addEventListener("click", () => {
+  function onNext() {
+    layout.renderGateOnQubit(2, "SX");
+    layout.renderGateOnQubit(14, "RZ", "2.35");
     qubit
       .animate(
         [
@@ -72,8 +89,10 @@ function render() {
         anim.commitStyles();
         anim.cancel();
       });
-  });
-  prev.addEventListener("click", () => {
+  }
+
+  function onPrev() {
+    layout.clearGates();
     qubit
       .animate(
         [
@@ -86,7 +105,12 @@ function render() {
         anim.commitStyles();
         anim.cancel();
       });
-  });
+  }
+
+  next.addEventListener("click", onNext);
+  prev.addEventListener("click", onPrev);
+
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {

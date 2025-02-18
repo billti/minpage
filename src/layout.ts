@@ -12,7 +12,7 @@ type Location = [number, number, SVGElement?];
 const qubitSize = 10;
 const zoneSpacing = 10;
 const colPadding = 10;
-const initialScale = 3.0;
+const initialScale = 3.33;
 const scaleStep = 0.25;
 const zoneBoxCornerRadius = 3;
 const doublonCornerRadius = 5;
@@ -36,6 +36,7 @@ export class Layout {
   width: number;
   height: number;
   scale: number = initialScale;
+  activeGates: SVGElement[] = [];
 
   constructor(public layout: MachineLayout, public qubits: Location[] = []) {
     if (layout.interactionRows != 1) {
@@ -169,6 +170,71 @@ export class Layout {
     });
 
     appendChildren(this.container, elems);
+  }
+
+  renderGateOnQubit(qubit: number, gate: string, arg?: string) {
+    const [x,y] = this.getQubitCenter(qubit);
+
+    const g = createSvgElements("g")[0];
+    setAttributes(g, {
+      transform: `translate(${x - qubitSize / 2} ${y - qubitSize / 2})`,
+      class: "minpage-gate", // TOOD: Add to CSS
+    });
+
+    const [rect,text] = createSvgElements("rect", "text");
+    setAttributes(rect, {
+      x: "0.5",
+      y: "0.5",
+      width: `${qubitSize - 1}`,
+      height: `${qubitSize - 1}`,
+      "stroke-width": "0",
+      "fill": "gold",
+    });
+    setAttributes(text, {
+      x: "5",
+      y: arg ? "2.75" : "5",
+      "stroke-width": "0",
+      "fill": "#000",
+      "font-size": arg ? "4" : "5",
+      "font-family": "verdana",
+      "text-anchor": "middle",
+      "dominant-baseline": "central",
+    });
+    text.textContent = gate;
+
+    appendChildren(g, [rect, text]);
+
+    if (arg) {
+      const argText = createSvgElements("text")[0];
+      setAttributes(argText, {
+        x: "5",
+        y: "7",
+        "stroke-width": "0",
+        "fill": "#000",
+        "font-size": "4",
+        "font-family": "verdana",
+        "text-anchor": "middle",
+        "dominant-baseline": "central",
+        "textLength": "8"
+      });
+      argText.textContent = arg;
+      appendChildren(g, [argText]);
+    }
+
+    appendChildren(this.container, [g]);
+    this.activeGates.push(g);
+  }
+
+  fireDoublon(qubit: number) {
+    // TODO
+  }
+
+  clearGates() {
+    this.activeGates.forEach((gate) => {
+      gate.parentElement?.removeChild(gate);
+    });
+    // TODO: Clear doublons too
+    this.activeGates = [];
   }
 
   zoomIn() {

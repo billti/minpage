@@ -9,6 +9,8 @@
         <path d="M50,0 v20" />
         <path d="M60,0 v20" />
         <path d="M70,0 v20" />
+        <rect x="50.5" y="10.5" width="9" height="9" stroke-width="0" stroke="black" fill="#FA8"/>
+        <text x="55" y="15" stroke-width="0" fill="black" font-family="Verdana" font-size="5" text-anchor="middle" dominant-baseline="central">MZ</text>
     </g>
     <text x="1" y="9" font-size="7" font-family="Helvetica" fill="gray">Readout</text>
     <g stroke="white" stroke-width="0.75" fill="#bbd" transform="translate(0,40)">
@@ -16,10 +18,13 @@
         <path d="M10,0 v10" />
         <rect x="20" y="0" width="20" height="10" rx="5" />
         <path d="M30,0 v10" />
-        <rect x="40" y="0" width="20" height="10" rx="5" />
+        <rect x="40" y="0" width="20" height="10" rx="5" fill="#FC4" />
         <path d="M50,0 v10" />
         <rect x="60" y="0" width="20" height="10" rx="5" />
         <path d="M70,0 v10" />
+        <path d= "M45,5 h10" stroke-width="1.5" stroke="black"/>
+        <circle cx="45" cy="5" r="2" stroke-width="0" fill="#123" />
+        <circle cx="55" cy="5" r="2" stroke-width="0" fill="#123" />
     </g>
     <text x="1" y="39" font-size="7" font-family="Helvetica" fill="gray">Interaction</text>
     <g stroke="white" stroke-width="0.75" fill="#bbd" transform="translate(0,60)">
@@ -34,6 +39,11 @@
         <path d="M50,0 v40" />
         <path d="M60,0 v40" />
         <path d="M70,0 v40" />
+        <rect x="30.5" y="0.5" width="9" height="9" stroke-width="0" stroke="black" fill="#8AF"/>
+        <rect x="10.5" y="10.5" width="9" height="9" stroke-width="0" stroke="black" fill="#8FA"/>
+        <text x="35" y="5" stroke-width="0" fill="black" font-family="Verdana" font-size="5" text-anchor="middle" dominant-baseline="central">SX</text>
+        <text x="15" y="12.75" stroke-width="0" fill="black" font-family="Verdana" font-size="4" text-anchor="middle" dominant-baseline="central">RZ</text>
+        <text x="15" y="17" stroke-width="0" fill="black" font-family="Verdana" font-size="4" text-anchor="middle" dominant-baseline="central" textLength="8.5">2.53</text>
     </g>
     <text x="1" y="59" font-size="7" font-family="Helvetica" fill="gray">Storage</text>
 </svg>
