@@ -187,18 +187,12 @@ export class Layout {
       y: "0.5",
       width: `${qubitSize - 1}`,
       height: `${qubitSize - 1}`,
-      "stroke-width": "0",
-      "fill": "gold",
+      "class": "minpage-gate",
     });
     setAttributes(text, {
       x: "5",
       y: arg ? "2.75" : "5",
-      "stroke-width": "0",
-      "fill": "#000",
-      "font-size": arg ? "4" : "5",
-      "font-family": "verdana",
-      "text-anchor": "middle",
-      "dominant-baseline": "central",
+      "class": "minpage-gate-text",
     });
     text.textContent = gate;
 
@@ -209,14 +203,10 @@ export class Layout {
       setAttributes(argText, {
         x: "5",
         y: "7",
-        "stroke-width": "0",
-        "fill": "#000",
-        "font-size": "4",
-        "font-family": "verdana",
-        "text-anchor": "middle",
-        "dominant-baseline": "central",
+        "class": "minpage-gate-text minpage-gate-text-small",
         "textLength": "8"
       });
+      text.classList.add("minpage-gate-text-small");
       argText.textContent = arg;
       appendChildren(g, [argText]);
     }

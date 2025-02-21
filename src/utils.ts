@@ -21,7 +21,8 @@ export function addChildWithClass(
   childTag: string,
   className: string
 ): HTMLElement {
-  const child = document.createElement(childTag);
+  const parentDoc = parent.ownerDocument;
+  const child = parentDoc.createElement(childTag);
   child.classList.add(className);
   parent.appendChild(child);
   return child;

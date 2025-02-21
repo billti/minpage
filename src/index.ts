@@ -8,7 +8,7 @@ import { fillQubitLocations, Layout } from "./layout";
 import { getMachine, MachineLayout } from "./loader";
 import { addChildWithClass } from "./utils";
 
-function render(container: HTMLDivElement, machineLayout: MachineLayout) {
+function render(container: HTMLElement, machineLayout: MachineLayout) {
   const toolstrip = addChildWithClass(container, "div", "minpage-toolstrip");
   const zones = addChildWithClass(container, "div", "minpage-zones");
 
@@ -40,6 +40,14 @@ function render(container: HTMLDivElement, machineLayout: MachineLayout) {
         e.preventDefault();
         onPrev();
         break;
+      case "ArrowUp":
+        e.preventDefault();
+        onZoomIn();
+        break;
+      case "ArrowDown":
+        e.preventDefault();
+        onZoomOut();
+        break;
     }
   });
 
@@ -63,15 +71,6 @@ function render(container: HTMLDivElement, machineLayout: MachineLayout) {
       ? (container.style.width = `${newWidth}px`)
       : (container.style.width = "600px");
   }
-
-  zoomIn.addEventListener("click", () => {
-    layout.zoomIn();
-    setAppWidth();
-  });
-  zoomOut.addEventListener("click", () => {
-    layout.zoomOut();
-    setAppWidth();
-  });
 
   function onNext() {
     layout.renderGateOnQubit(2, "SX");
@@ -106,21 +105,31 @@ function render(container: HTMLDivElement, machineLayout: MachineLayout) {
       });
   }
 
+  function onZoomIn() {
+    layout.zoomIn();
+    setAppWidth();
+  }
+
+  function onZoomOut() {
+    layout.zoomOut();
+    setAppWidth();
+  }
+
   next.addEventListener("click", onNext);
   prev.addEventListener("click", onPrev);
+  zoomIn.addEventListener("click", onZoomIn);
+  zoomOut.addEventListener("click", onZoomOut);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const minpageApp = document.createElement("div");
-  minpageApp.className = "minpage-app";
+  const minpageApp = addChildWithClass(document.body, "div", "minpage-app");
 
   // Set the theme if explicitly provided
   const urlParams = new URLSearchParams(window.location.search);
   const theme = urlParams.get("theme");
   if (theme) {
-    minpageApp.setAttribute("data-theme", theme);
+    document.body.setAttribute("data-theme", theme);
   }
 
-  document.body.appendChild(minpageApp);
   render(minpageApp, getMachine());
 });
