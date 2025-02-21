@@ -15,3 +15,14 @@ export function setAttributes(el: SVGElement, attrs: StringMap) {
 export function appendChildren(parent: Element, children: Element[]) {
   children.forEach((child) => parent.appendChild(child));
 }
+
+export function addChildWithClass(
+  parent: HTMLElement,
+  childTag: string,
+  className: string
+): HTMLElement {
+  const child = document.createElement(childTag);
+  child.classList.add(className);
+  parent.appendChild(child);
+  return child;
+}

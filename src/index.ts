@@ -1,15 +1,17 @@
-import { createPlayerControls, createScrubberControls, createZoomControls } from "./controls";
+import {
+  createPlayerControls,
+  createScrubberControls,
+  createZoomControls,
+} from "./controls";
 import "./index.css";
 import { fillQubitLocations, Layout } from "./layout";
+import { getMachine, MachineLayout } from "./loader";
+import { addChildWithClass } from "./utils";
 
-const machineLayout = {
-  cols: 16,
-  readoutRows: 2,
-  interactionRows: 1,
-  storageRows: 16,
-}
+function render(container: HTMLDivElement, machineLayout: MachineLayout) {
+  const toolstrip = addChildWithClass(container, "div", "minpage-toolstrip");
+  const zones = addChildWithClass(container, "div", "minpage-zones");
 
-function render() {
   // Render the layout
   const qubits = fillQubitLocations(4, 6, 3);
   const layout = new Layout(machineLayout, qubits);
@@ -18,21 +20,17 @@ function render() {
   zoomControls.classList.add("minpage-toolbar-left");
 
   const playerControls = createPlayerControls();
-  const scrubberControls = createScrubberControls()
+  const scrubberControls = createScrubberControls();
 
-  const toolstrip = document.body.querySelector(".minpage-toolstrip") as HTMLDivElement;
   toolstrip.appendChild(zoomControls);
   toolstrip.appendChild(scrubberControls);
   toolstrip.appendChild(playerControls);
 
-
-  const zones = document.body.querySelector(".minpage-zones") as HTMLDivElement;
   zones.appendChild(layout.container);
 
   // Wire up the controls
-  const app: HTMLDivElement = document.getElementById("app") as HTMLDivElement;
-  app.tabIndex = 0;
-  app.addEventListener("keydown", (e) => {
+  container.tabIndex = 0;
+  container.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "ArrowRight":
         e.preventDefault();
@@ -44,7 +42,6 @@ function render() {
         break;
     }
   });
-
 
   const next = document.querySelector(
     "[data-control='next']"
@@ -61,8 +58,10 @@ function render() {
   const qubit = document.querySelector(".minpage-qubit") as SVGCircleElement;
 
   function setAppWidth() {
-    const newWidth = (layout.width * layout.scale) + 32;
-    newWidth > 600 ? app.style.width = `${newWidth}px` : app.style.width = "600px";
+    const newWidth = layout.width * layout.scale + 32;
+    newWidth > 600
+      ? (container.style.width = `${newWidth}px`)
+      : (container.style.width = "600px");
   }
 
   zoomIn.addEventListener("click", () => {
@@ -109,16 +108,19 @@ function render() {
 
   next.addEventListener("click", onNext);
   prev.addEventListener("click", onPrev);
-
-
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const minpageApp = document.createElement("div");
+  minpageApp.className = "minpage-app";
+
   // Set the theme if explicitly provided
   const urlParams = new URLSearchParams(window.location.search);
   const theme = urlParams.get("theme");
   if (theme) {
-    document.body.setAttribute("data-theme", theme);
+    minpageApp.setAttribute("data-theme", theme);
   }
-  render();
+
+  document.body.appendChild(minpageApp);
+  render(minpageApp, getMachine());
 });
