@@ -14,7 +14,7 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
 
   // Render the layout
   const qubits = trace.qubits;
-  const layout = new Layout(machineLayout, qubits);
+  const layout = new Layout(machineLayout, trace);
 
   const zoomControls = createZoomControls();
   zoomControls.classList.add("minpage-toolbar-left");

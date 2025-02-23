@@ -1,3 +1,4 @@
+import { Trace } from "./loader";
 import { appendChildren, createSvgElements, setAttributes } from "./utils";
 
 type MachineLayout = {
@@ -8,6 +9,11 @@ type MachineLayout = {
 };
 
 type Location = [number, number, SVGElement?];
+
+type PerStepLayout = Array<{
+  qubits: Location[],
+  ops: string[],
+}>;
 
 const qubitSize = 10;
 const zoneSpacing = 10;
@@ -31,17 +37,58 @@ export function fillQubitLocations(
   return qubits;
 }
 
+function parseMove(op: string): {qubit: number, to: Location} | undefined {
+  const match = op.match(/move\((\d+), (\d+)\) (\d+)/);
+  if (match) {
+    const to: Location = [parseInt(match[1]), parseInt(match[2])];
+    return { qubit: parseInt(match[3]), to };
+  }
+  return undefined;
+}
+
+function TraceToPerStepLayout(trace: Trace): PerStepLayout {
+  // TODO: Verify structuredClone works in Jupyter, VS Code WebViews, etc.
+  // Note: Could add some validation for qubit indexes, don't move the same qubits twice in a step..
+  const perStepLayout: PerStepLayout = [];
+
+  trace.steps.forEach((step, idx) => {
+    if (idx == 0) {
+      perStepLayout.push({
+        qubits: structuredClone(trace.qubits),
+        ops: step.ops,
+      });
+    } else {
+      // New locations are the previous locations with the previous step moves applied
+      const prevStep = perStepLayout[idx - 1];
+      // forEach and map are only invoked for populated elements in sparse arrays
+      const prevMoves = prevStep.ops.map(parseMove).filter((x) => x != undefined);
+
+      const qubits = structuredClone(prevStep.qubits);
+      prevMoves.forEach((move) => {
+        qubits[move.qubit] = move.to;
+      });
+      perStepLayout.push({ qubits, ops: step.ops });
+    }
+  });
+  return perStepLayout;
+}
+
 export class Layout {
   container: SVGSVGElement;
   width: number;
   height: number;
   scale: number = initialScale;
+  qubits: Location[];
   activeGates: SVGElement[] = [];
+  perStepLayout: PerStepLayout;
 
-  constructor(public layout: MachineLayout, public qubits: Location[] = []) {
+  constructor(public layout: MachineLayout, trace: Trace) {
     if (layout.interactionRows != 1) {
       throw "Only 1 interaction row supported";
     }
+    this.perStepLayout = TraceToPerStepLayout(trace);
+    this.qubits = structuredClone(this.perStepLayout[0].qubits);
+
     this.container = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "svg"
