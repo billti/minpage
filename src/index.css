@@ -45,6 +45,10 @@
   flex-direction: column;
 }
 
+.minpage-app:focus {
+  outline: none;
+}
+
 .minpage-toolstrip {
   display: flex;
   align-items: center;

@@ -5,15 +5,15 @@ import {
 } from "./controls";
 import "./index.css";
 import { fillQubitLocations, Layout } from "./layout";
-import { getMachine, MachineLayout } from "./loader";
+import { getMachine, getSampleTrace, MachineLayout, Trace } from "./loader";
 import { addChildWithClass } from "./utils";
 
-function render(container: HTMLElement, machineLayout: MachineLayout) {
+function render(container: HTMLElement, machineLayout: MachineLayout, trace: Trace) {
   const toolstrip = addChildWithClass(container, "div", "minpage-toolstrip");
   const zones = addChildWithClass(container, "div", "minpage-zones");
 
   // Render the layout
-  const qubits = fillQubitLocations(4, 6, 3);
+  const qubits = trace.qubits;
   const layout = new Layout(machineLayout, qubits);
 
   const zoomControls = createZoomControls();
@@ -78,8 +78,8 @@ function render(container: HTMLElement, machineLayout: MachineLayout) {
     qubit
       .animate(
         [
-          { cx: 5, cy: 65 },
-          { cx: 15, cy: 45 },
+          { transform: "translate(5px, 65px)" },
+          { transform: "translate(15px, 45px)" },
         ],
         { duration: 250, fill: "forwards", easing: "ease" }
       )
@@ -94,8 +94,8 @@ function render(container: HTMLElement, machineLayout: MachineLayout) {
     qubit
       .animate(
         [
-          { cx: 15, cy: 45 },
-          { cx: 5, cy: 65 },
+          { transform: "translate(15px, 45px)" },
+          { transform: "translate(5px, 65px)" },
         ],
         { duration: 250, fill: "forwards", easing: "ease" }
       )
@@ -131,5 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.setAttribute("data-theme", theme);
   }
 
-  render(minpageApp, getMachine());
+  const trace = getSampleTrace();
+
+  render(minpageApp, getMachine(), trace);
 });

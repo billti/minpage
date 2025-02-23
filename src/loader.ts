@@ -20,9 +20,9 @@ export function getMachine(): MachineLayout {
     return machineLayout;
 }
 
-export function getTrace() : Trace {
+export function getSampleTrace() : Trace {
     return {
-        metadata: {"name": "test-uranium-1a"},
+        metadata: {"name": "test-rosebud-1a"},
         qubits: [
             [3, 0], [3, 1], [3, 2], [3, 3], [3, 4], [3, 5],
             [4, 0], [4, 1], [4, 2], [4, 3], [4, 4], [4, 5],
@@ -37,7 +37,8 @@ export function getTrace() : Trace {
             {id: 5, ops: ["rz(0.7854) 0", "rz(0.7854) 2"]},
             {id: 6, ops: ["move(1, 0) 1", "move(1, 1) 3"]},
             {id: 7, ops: ["mz 1", "mz 3"]},
-            {id: 8, ops: ["reload(3, 1) 1", "reload(3, 3) 3"]},
+            {id: 8, ops: ["reset 1", "reset 3"]},
+            {id: 9, ops: ["move(3, 1) 1", "move(3, 3) 3"]},
         ],
     };
 }

@@ -158,11 +158,16 @@ export class Layout {
     const elems = this.qubits.map((location, index, array) => {
       const [x, y] = this.getQubitCenter(index);
 
+      // Safari has an issue animating multiple attributes concurrently, which we need
+      // to do to move the qubit (animate 'cx' and 'cy'), so instead set cx and cy to 0
+      // and position the qubit with a transform (see https://stackoverflow.com/a/72022385/1674945)
+
       const circle = createSvgElements("circle")[0];
       setAttributes(circle, {
-        cx: `${x}`,
-        cy: `${y}`,
+        cx: `0`,
+        cy: `0`,
         r: `2`,
+        transform: `translate(${x}, ${y})`,
         class: "minpage-qubit",
       });
       location[2] = circle;
