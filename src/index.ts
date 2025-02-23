@@ -4,21 +4,14 @@ import {
   createZoomControls,
 } from "./controls";
 import "./index.css";
-import { fillQubitLocations, Layout } from "./layout";
+import { Layout } from "./layout";
 import { getMachine, getSampleTrace, MachineLayout, Trace } from "./loader";
 import { addChildWithClass } from "./utils";
 
 function render(container: HTMLElement, machineLayout: MachineLayout, trace: Trace) {
   const toolstrip = addChildWithClass(container, "div", "minpage-toolstrip");
-  const zones = addChildWithClass(container, "div", "minpage-zones");
-
-  // Render the layout
-  const qubits = trace.qubits;
-  const layout = new Layout(machineLayout, trace);
 
   const zoomControls = createZoomControls();
-  zoomControls.classList.add("minpage-toolbar-left");
-
   const playerControls = createPlayerControls();
   const scrubberControls = createScrubberControls();
 
@@ -26,6 +19,9 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
   toolstrip.appendChild(scrubberControls);
   toolstrip.appendChild(playerControls);
 
+  // Render the layout
+  const zones = addChildWithClass(container, "div", "minpage-zones");
+  const layout = new Layout(machineLayout, trace);
   zones.appendChild(layout.container);
 
   // Wire up the controls
@@ -51,18 +47,10 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
     }
   });
 
-  const next = document.querySelector(
-    "[data-control='next']"
-  ) as SVGCircleElement;
-  const prev = document.querySelector(
-    "[data-control='prev']"
-  ) as SVGCircleElement;
-  const zoomIn = document.querySelector(
-    "[data-control='zoom-in']"
-  ) as SVGCircleElement;
-  const zoomOut = document.querySelector(
-    "[data-control='zoom-out']"
-  ) as SVGCircleElement;
+  const next = document.querySelector( "[data-control='next']") as SVGCircleElement;
+  const prev = document.querySelector( "[data-control='prev']") as SVGCircleElement;
+  const zoomIn = document.querySelector( "[data-control='zoom-in']") as SVGCircleElement;
+  const zoomOut = document.querySelector( "[data-control='zoom-out']") as SVGCircleElement;
   const qubit = document.querySelector(".minpage-qubit") as SVGCircleElement;
 
   function setAppWidth() {
@@ -132,6 +120,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const trace = getSampleTrace();
-
   render(minpageApp, getMachine(), trace);
 });

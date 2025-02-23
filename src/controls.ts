@@ -95,7 +95,7 @@ export function createZoomControls() : SVGSVGElement {
     const width = 256 * 2 + 32;
     setAttributes(svg, {
         "viewBox": `0 0 ${width} 256`,
-        "class": "minpage-toolbar",
+        "class": "minpage-toolbar minpage-toolbar-left",
     });
     const zoomIn = getIcon("zoom-in");
     zoomIn.setAttribute("transform", "translate(0)");
@@ -113,15 +113,15 @@ export function createScrubberControls() : HTMLDivElement {
 
     const span = document.createElement("span");
     span.classList.add("minpage-step");
-    span.innerText = "1280 / 9376";
+    span.innerText = "0 / 16";
 
     const slider = document.createElement("input");
     slider.type = "range";
     slider.classList.add("minpage-slider");
     slider.id = "slider";
     slider.min = "0";
-    slider.max = "9376";
-    slider.value = "1280";
+    slider.max = "16";
+    slider.value = "1";
 
     div.appendChild(span);
     div.appendChild(slider);

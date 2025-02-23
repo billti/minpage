@@ -1,11 +1,11 @@
 # TODO
 
-- Process the trace into qubit locations per step for quick forward/back movement
 - Load/run a sample trace and wire up to scrubber and controls
 - Draw the doublons firing and the measurements (lose / reload the qubit?)
 - Number the rows and columns
 - Draw a from/to line when qubits move
 - Fix the layout issues if initial size/scale is too large
+- Fix the qubit movement when != 2 readout zones
 - Figure out status line and popup info for qubit hovering
 - Figure out how to show measurement results, qubit loss, and reloading
 - Figure out if/how to overlay noise or loss probabilities on qubits
