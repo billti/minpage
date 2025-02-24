@@ -1,7 +1,5 @@
 # TODO
 
-- Wire up the play/pause controls
-- *MVP at this line*
 - Draw a from/to line when qubits move (and animate backwards if stepping backwards)
 - Fix the layout issues if initial size/scale is too large
 - Fix the qubit movement when != 2 readout zones
