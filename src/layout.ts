@@ -315,4 +315,8 @@ export class Layout {
     const y = this.getQubitRowOffset(row) + qubitSize / 2;
     return [x, y];
   }
+
+  gotoStep(step: number) {
+    console.log("navigating to step ", step);
+  }
 }

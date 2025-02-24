@@ -14,9 +14,10 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
   const zoomControls = createZoomControls();
   const playerControls = createPlayerControls();
   const scrubberControls = createScrubberControls();
+  scrubberControls.setRange(trace.steps.length);
 
   toolstrip.appendChild(zoomControls);
-  toolstrip.appendChild(scrubberControls);
+  toolstrip.appendChild(scrubberControls.element);
   toolstrip.appendChild(playerControls);
 
   // Render the layout
@@ -24,17 +25,19 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
   const layout = new Layout(machineLayout, trace);
   zones.appendChild(layout.container);
 
+  scrubberControls.setNavHandler((step: number) => layout.gotoStep(step));
+
   // Wire up the controls
   container.tabIndex = 0;
   container.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "ArrowRight":
         e.preventDefault();
-        onNext();
+        scrubberControls.next();
         break;
       case "ArrowLeft":
         e.preventDefault();
-        onPrev();
+        scrubberControls.prev();
         break;
       case "ArrowUp":
         e.preventDefault();
@@ -103,8 +106,8 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
     setAppWidth();
   }
 
-  next.addEventListener("click", onNext);
-  prev.addEventListener("click", onPrev);
+  next.addEventListener("click", () => scrubberControls.next());
+  prev.addEventListener("click", () => scrubberControls.prev());
   zoomIn.addEventListener("click", onZoomIn);
   zoomOut.addEventListener("click", onZoomOut);
 }

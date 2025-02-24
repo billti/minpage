@@ -1,9 +1,10 @@
 # TODO
 
-- Load/run a sample trace and wire up to scrubber and controls
+- Navigate the layout on gotoStep
 - Draw the doublons firing and the measurements (lose / reload the qubit?)
 - Number the rows and columns
 - Draw a from/to line when qubits move
+- Wire up the play/pause controls
 - Fix the layout issues if initial size/scale is too large
 - Fix the qubit movement when != 2 readout zones
 - Figure out status line and popup info for qubit hovering

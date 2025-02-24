@@ -107,23 +107,78 @@ export function createZoomControls() : SVGSVGElement {
     return svg;
 }
 
-export function createScrubberControls() : HTMLDivElement {
+export interface Scrubber {
+  element: HTMLDivElement;
+  setNavHandler(handler: (step: number) => void);
+  setRange(len: number);
+  next();
+  prev();
+}
+
+export function createScrubberControls() : Scrubber {
+    let navHandler: ((step: number) => void) | null = null;
+    let val = 0;
+    let max = 0;
+
     const div = document.createElement("div");
     div.style.margin = "0 auto";
 
     const span = document.createElement("span");
     span.classList.add("minpage-step");
-    span.innerText = "0 / 16";
 
     const slider = document.createElement("input");
     slider.type = "range";
     slider.classList.add("minpage-slider");
     slider.id = "slider";
     slider.min = "0";
-    slider.max = "16";
-    slider.value = "1";
+    slider.max = "0";
+    slider.value = "0";
+
+    // oninput gives constant updates while scrubbing, whereas onchange is only once released
+    slider.oninput = ev => {
+      ev.preventDefault();
+      val = parseInt((ev.target as HTMLInputElement).value);
+      render();
+      if (navHandler) navHandler(val);
+    };
 
     div.appendChild(span);
     div.appendChild(slider);
-    return div;
+
+    function setRange(len: number) {
+      max = len;
+      slider.max = `${len}`;
+      render();
+    }
+
+    function render() {
+      span.innerText = `${val} / ${max}`;
+      slider.value = `${val}`;
+    }
+
+    function next() {
+      if (val < max) {
+        val += 1;
+        render();
+        if (navHandler) navHandler(val);
+      }
+    }
+
+    function prev() {
+      if (val > 0) {
+        val -= 1;
+        render();
+        if (navHandler) navHandler(val);
+      }
+    }
+
+    render();
+
+    return {
+      element: div,
+      setRange,
+      setNavHandler: (handler) => navHandler = handler,
+      next,
+      prev,
+    };
 }
