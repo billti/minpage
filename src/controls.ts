@@ -111,8 +111,10 @@ export interface Scrubber {
   element: HTMLDivElement;
   setNavHandler(handler: (step: number) => void);
   setRange(len: number);
+  reset();
   next();
   prev();
+  isAtEnd(): boolean;
 }
 
 export function createScrubberControls() : Scrubber {
@@ -180,5 +182,7 @@ export function createScrubberControls() : Scrubber {
       setNavHandler: (handler) => navHandler = handler,
       next,
       prev,
+      reset: () => val = 0,
+      isAtEnd: () => val === max,
     };
 }

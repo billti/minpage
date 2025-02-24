@@ -69,6 +69,8 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
 
   const next = document.querySelector( "[data-control='next']") as SVGCircleElement;
   const prev = document.querySelector( "[data-control='prev']") as SVGCircleElement;
+  const play = document.querySelector( "[data-control='play']") as SVGCircleElement;
+  const pause = document.querySelector( "[data-control='pause']") as SVGCircleElement;
   const zoomIn = document.querySelector( "[data-control='zoom-in']") as SVGCircleElement;
   const zoomOut = document.querySelector( "[data-control='zoom-out']") as SVGCircleElement;
 
@@ -76,6 +78,29 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
   prev.addEventListener("click", () => scrubberControls.prev());
   zoomIn.addEventListener("click", onZoomIn);
   zoomOut.addEventListener("click", onZoomOut);
+
+  let playTimer: number | undefined;
+
+  play.addEventListener("click", () => {
+    play.parentElement!.style.display = "none";
+    pause.parentElement!.style.display = "inline";
+    if (scrubberControls.isAtEnd()) scrubberControls.reset();
+    playTimer = setInterval(() => {
+      if (scrubberControls.isAtEnd()) {
+        clearInterval(playTimer);
+        pause.parentElement!.style.display = "none";
+        play.parentElement!.style.display = "inline";
+      } else {
+        scrubberControls.next();
+      }
+    }, 500);
+
+  });
+  pause.addEventListener("click", () => {
+    pause.parentElement!.style.display = "none";
+    play.parentElement!.style.display = "inline";
+    clearInterval(playTimer);
+  });
 
   onZoomIn();
 }
