@@ -5,6 +5,7 @@
   --minpage-background-color: #eee;
   --minpage-qubitbox: #bbd;
   --minpage-qubit: #123;
+  --minpage-label: #aaa;
   --minpage-gate: #66d;
   --minpage-gate-cz: #ec4;
   --minpage-gate-mz: #822;
@@ -17,6 +18,7 @@
     --minpage-background-color: #222;
     --minpage-qubitbox: #446;
     --minpage-qubit: #9df;
+    --minpage-label: #666;
     --minpage-gate: #ccf;
     --minpage-gate-cz: #b91;
     --minpage-gate-mz: #e88;
@@ -29,6 +31,7 @@
   --minpage-background-color: #222;
   --minpage-qubitbox: #446;
   --minpage-qubit: #9df;
+  --minpage-label: #666;
   --minpage-gate: #ccf;
   --minpage-gate-cz: #b91;
   --minpage-gate-mz: #e88;
@@ -121,6 +124,18 @@
   stroke-width: 0;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.minpage-label {
+  font-size: 6px;
+  font-family: "Helvetica";
+  fill: var(--minpage-label);
+  stroke-width: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  text-anchor: middle;
+  dominant-baseline: central;
+  width: 20px;
 }
 
 .minpage-zonebox {

@@ -110,6 +110,8 @@ function render(container: HTMLElement, machineLayout: MachineLayout, trace: Tra
   prev.addEventListener("click", () => scrubberControls.prev());
   zoomIn.addEventListener("click", onZoomIn);
   zoomOut.addEventListener("click", onZoomOut);
+
+  onZoomIn();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

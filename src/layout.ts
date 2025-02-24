@@ -17,8 +17,8 @@ type PerStepLayout = Array<{
 
 const qubitSize = 10;
 const zoneSpacing = 10;
-const colPadding = 10;
-const initialScale = 3.33;
+const colPadding = 20;
+const initialScale = 2.5;
 const scaleStep = 0.25;
 const zoneBoxCornerRadius = 3;
 const doublonCornerRadius = 5;
@@ -120,18 +120,21 @@ export class Layout {
     const storageOffset = this.getQubitRowOffset(
       layout.readoutRows + layout.interactionRows
     );
+    const colNumOffset = this.getQubitRowOffset(totalRows);
 
     this.renderZone(readoutOffset, "Readout", layout.readoutRows, layout.cols);
-    this.renderDoublons(interactionOffset, "Interaction", layout.cols);
-    this.renderZone(storageOffset, "Storage", layout.storageRows, layout.cols);
+    this.renderDoublons(interactionOffset, "Interaction", layout.cols, layout.readoutRows);
+    this.renderZone(storageOffset, "Storage", layout.storageRows, layout.cols, layout.readoutRows + layout.interactionRows);
     this.renderQubits();
+    this.renderColNums(layout.cols, colNumOffset);
   }
 
   private renderZone(
     offset: number,
     title: string,
     rows: number,
-    cols: number
+    cols: number,
+    firstRowNum = 0,
   ) {
     const g = createSvgElements("g")[0];
     setAttributes(g, {
@@ -157,6 +160,19 @@ export class Layout {
       appendChildren(g, [path]);
     }
 
+    // Number the rows
+    for(let i = 0; i < rows; ++i) {
+      const rowNum = firstRowNum + i;
+      const label = createSvgElements("text")[0];
+      setAttributes(label, {
+        x: `${cols * qubitSize + 5}`,
+        y: `${i * qubitSize + 5}`,
+        class: "minpage-label",
+      });
+      label.textContent = `${rowNum}`
+      appendChildren(g, [label]);
+    }
+
     // Draw the lines between the columns
     for (let i = 1; i < cols; i++) {
       const path = createSvgElements("path")[0];
@@ -179,7 +195,7 @@ export class Layout {
     appendChildren(this.container, [g]);
   }
 
-  private renderDoublons(offset: number, title: string, cols: number) {
+  private renderDoublons(offset: number, title: string, cols: number, firstRowNum = 1) {
     const g = createSvgElements("g")[0];
     setAttributes(g, {
       transform: `translate(0 ${offset})`,
@@ -201,6 +217,19 @@ export class Layout {
         d: `M ${(i + 1) * qubitSize},0 v${qubitSize}`,
       });
       appendChildren(g, [rect, path]);
+    }
+
+    // Number the rows
+    for (let i = 0; i < 1 /* only 1 doublon row */ ; ++i) {
+      const rowNum = firstRowNum + i;
+      const label = createSvgElements("text")[0];
+      setAttributes(label, {
+        x: `${cols * qubitSize + 5}`,
+        y: `${i * qubitSize + 5}`,
+        class: "minpage-label",
+      });
+      label.textContent = `${rowNum}`;
+      appendChildren(g, [label]);
     }
 
     // Draw the title
@@ -239,6 +268,26 @@ export class Layout {
     });
 
     appendChildren(this.container, elems);
+  }
+
+  private renderColNums(cols: number, offset: number) {
+    const g = createSvgElements("g")[0];
+    setAttributes(g, {
+      transform: `translate(0 ${offset})`,
+    }); 
+    // Number the columns
+    for(let i = 0; i < cols; ++i) {
+      const rowNum = i;
+      const label = createSvgElements("text")[0];
+      setAttributes(label, {
+        x: `${i * qubitSize + 5}`,
+        y: `5`,
+        class: "minpage-label",
+      });
+      label.textContent = `${i}`
+      appendChildren(g, [label]);
+    }
+    appendChildren(this.container, [g]);
   }
 
   renderGateOnQubit(qubit: number, gate: string, arg?: string) {

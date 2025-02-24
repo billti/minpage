@@ -1,8 +1,5 @@
 # TODO
 
-- Draw the doublons firing
-- Color MZ as red and Reset as green
-- Number the rows and columns
 - Wire up the play/pause controls
 - *MVP at this line*
 - Draw a from/to line when qubits move (and animate backwards if stepping backwards)
