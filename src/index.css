@@ -6,6 +6,9 @@
   --minpage-qubitbox: #bbd;
   --minpage-qubit: #123;
   --minpage-gate: #66d;
+  --minpage-gate-cz: #ec4;
+  --minpage-gate-mz: #822;
+  --minpage-gate-reset: #282;
 }
 /* User has set OS preference for dark (explict theme will override) */
 @media (prefers-color-scheme: dark) {
@@ -15,6 +18,9 @@
     --minpage-qubitbox: #446;
     --minpage-qubit: #9df;
     --minpage-gate: #ccf;
+    --minpage-gate-cz: #b91;
+    --minpage-gate-mz: #e88;
+    --minpage-gate-reset: #8e8;
   }
 }
 /* Explicit dark theme set (should match above dark preference values) */
@@ -24,6 +30,9 @@
   --minpage-qubitbox: #446;
   --minpage-qubit: #9df;
   --minpage-gate: #ccf;
+  --minpage-gate-cz: #b91;
+  --minpage-gate-mz: #e88;
+  --minpage-gate-reset: #8e8;
 }
 
 .minpage-body {
@@ -128,6 +137,17 @@
 .minpage-gate {
   fill: var(--minpage-gate);
   stroke-width: 0;
+}
+
+.minpage-gate-cz {
+  fill: var(--minpage-gate-cz);
+}
+.minpage-gate-mz {
+  fill: var(--minpage-gate-mz);
+}
+
+.minpage-gate-reset {
+  fill: var(--minpage-gate-reset);
 }
 
 .minpage-gate-text {

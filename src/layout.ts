@@ -127,7 +127,12 @@ export class Layout {
     this.renderQubits();
   }
 
-  private renderZone(offset: number, title: string, rows: number, cols: number) {
+  private renderZone(
+    offset: number,
+    title: string,
+    rows: number,
+    cols: number
+  ) {
     const g = createSvgElements("g")[0];
     setAttributes(g, {
       transform: `translate(0 ${offset})`,
@@ -238,42 +243,86 @@ export class Layout {
 
   renderGateOnQubit(qubit: number, gate: string, arg?: string) {
     if (gate == "RESET") gate = "R";
-    const [x,y] = this.getQubitCenter(qubit);
+    const [x, y] = this.getQubitCenter(qubit);
+
+    const gateClass =
+      gate === "MZ"
+        ? "minpage-gate minpage-gate-mz"
+        : gate === "R"
+        ? "minpage-gate minpage-gate-reset"
+        : "minpage-gate";
 
     const g = createSvgElements("g")[0];
     setAttributes(g, {
       transform: `translate(${x - qubitSize / 2} ${y - qubitSize / 2})`,
-      class: "minpage-gate", // TOOD: Add to CSS
+      class: "minpage-gate",
     });
 
-    const [rect,text] = createSvgElements("rect", "text");
-    setAttributes(rect, {
-      x: "0.5",
-      y: "0.5",
-      width: `${qubitSize - 1}`,
-      height: `${qubitSize - 1}`,
-      "class": "minpage-gate",
-    });
-    setAttributes(text, {
-      x: "5",
-      y: arg ? "2.75" : "5",
-      "class": "minpage-gate-text",
-    });
-    text.textContent = gate;
-
-    appendChildren(g, [rect, text]);
-
-    if (arg) {
-      const argText = createSvgElements("text")[0];
-      setAttributes(argText, {
-        x: "5",
-        y: "7",
-        "class": "minpage-gate-text minpage-gate-text-small",
-        "textLength": "8"
+    if (gate === "CZ") {
+      // Render the rounded doublon box in a bright color and x--x inside
+      const [rect, path, leftDot, rightDot] = createSvgElements("rect", "path", "circle", "circle");
+      setAttributes(rect, {
+        x: `0`,
+        y: "0",
+        width: `${qubitSize * 2}`,
+        height: `${qubitSize}`,
+        rx: `${doublonCornerRadius}`,
+        class: "minpage-zonebox minpage-gate-cz",
       });
-      text.classList.add("minpage-gate-text-small");
-      argText.textContent = arg;
-      appendChildren(g, [argText]);
+      // <path d= "M45,5 h10" stroke-width="1.5" stroke="black"/>
+      // <circle cx="45" cy="5" r="2" stroke-width="0" fill="#123" />
+      // <circle cx="55" cy="5" r="2" stroke-width="0" fill="#123" />
+      setAttributes(path, {
+        "fill": "none",
+        "stroke": "black",
+        "stroke-width": "1.5",
+        d: "M5,5 h10"
+      });
+      setAttributes(leftDot, {
+        "cx": "5",
+        "cy": "5",
+        "r": "2",
+        "stroke-width": "0",
+        "fill": "#123",
+      });
+      setAttributes(rightDot, {
+        "cx": "15",
+        "cy": "5",
+        "r": "2",
+        "stroke-width": "0",
+        "fill": "#123",
+      });
+      appendChildren(g, [rect, path, leftDot, rightDot]);
+    } else {
+      const [rect, text] = createSvgElements("rect", "text");
+      setAttributes(rect, {
+        x: "0.5",
+        y: "0.5",
+        width: `${qubitSize - 1}`,
+        height: `${qubitSize - 1}`,
+        class: gateClass,
+      });
+      setAttributes(text, {
+        x: "5",
+        y: arg ? "2.75" : "5",
+        class: "minpage-gate-text",
+      });
+      text.textContent = gate;
+
+      appendChildren(g, [rect, text]);
+
+      if (arg) {
+        const argText = createSvgElements("text")[0];
+        setAttributes(argText, {
+          x: "5",
+          y: "7",
+          class: "minpage-gate-text minpage-gate-text-small",
+          textLength: "8",
+        });
+        text.classList.add("minpage-gate-text-small");
+        argText.textContent = arg;
+        appendChildren(g, [argText]);
+      }
     }
 
     appendChildren(this.container, [g]);
@@ -318,7 +367,7 @@ export class Layout {
     }
   }
 
-  getLocationCenter(row: number, col: number) : [number, number] {
+  getLocationCenter(row: number, col: number): [number, number] {
     const x = col * qubitSize + qubitSize / 2;
     const y = this.getQubitRowOffset(row) + qubitSize / 2;
     return [x, y];
@@ -350,7 +399,7 @@ export class Layout {
       this.qubits[idx] = [loc[0], loc[1], elem]; // Update the location
 
       // Get the offset for the location and move it there
-      const [x,y] = this.getQubitCenter(idx);
+      const [x, y] = this.getQubitCenter(idx);
       //elem.setAttribute("transform", `translate(${x}, ${y})`);
       elem.style.transform = `translate(${x}px, ${y}px)`;
     });
@@ -358,7 +407,7 @@ export class Layout {
     // Now apply the ops
     if (step > 0) {
       const ops = this.perStepLayout[qubitLocationIndex].ops;
-      ops.forEach(op => {
+      ops.forEach((op) => {
         const move = parseMove(op);
         if (move) {
           // Apply the move animation
@@ -378,12 +427,12 @@ export class Layout {
               anim.commitStyles();
               anim.cancel();
             });
-            // TODO: Check if you can/should cancel when scrubbing
+          // TODO: Check if you can/should cancel when scrubbing
         } else {
           // Wasn't a move, so render the gate
           const gate = parseGate(op);
           if (!gate) throw `Invalid gate: ${op}`;
-          const arg = gate.arg ? gate.arg.substring(0,4) : undefined;
+          const arg = gate.arg ? gate.arg.substring(0, 4) : undefined;
           this.renderGateOnQubit(gate.qubit, gate.gate.toUpperCase(), arg);
         }
       });
