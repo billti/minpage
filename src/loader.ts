@@ -39,6 +39,15 @@ export function getSampleTrace() : Trace {
             {id: 7, ops: ["mz 1", "mz 3"]},
             {id: 8, ops: ["reset 1", "reset 3"]},
             {id: 9, ops: ["move(3, 1) 1", "move(3, 3) 3"]},
+            {id: 9, ops: ["rz(0.7854) 8", "rz(0.7854) 10"]},
+            {id: 10, ops: ["sx 8", "sx 9", "sx 10", "sx 11"]},
+            {id: 11, ops: ["move(2, 2) 8", "move(2, 3) 9","move(2, 4) 10", "move(2, 5) 11"  ]},
+            {id: 12, ops: ["cz 8, 9", "cz 10, 11"]},
+            {id: 13, ops: ["move(4, 2) 8", "move(4, 3) 9","move(4, 4) 10", "move(4, 5) 11"  ]},
+            {id: 14, ops: ["move(1, 3) 9", "move(1, 5) 11"]},
+            {id: 15, ops: ["mz 9", "mz 11"]},
+            {id: 16, ops: ["reset 9", "reset 11"]},
+            {id: 17, ops: ["move(4, 3) 9", "move(4, 5) 11"]},
         ],
     };
 }
