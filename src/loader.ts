@@ -32,7 +32,7 @@ export function getSampleTrace() : Trace {
         steps: [
             {id: 1, ops: ["sx 0", "sx 1", "sx 2", "sx 3"]},
             {id: 2, ops: ["move(2, 0) 0", "move(2, 1) 1","move(2, 2) 2", "move(2, 3) 3"  ]},
-            {id: 3, ops: ["cx 0, 1", "cx 2, 3"]},
+            {id: 3, ops: ["cz 0, 1", "cz 2, 3"]},
             {id: 4, ops: ["move(3, 0) 0", "move(3, 1) 1","move(3, 2) 2", "move(3, 3) 3"  ]},
             {id: 5, ops: ["rz(0.7854) 0", "rz(0.7854) 2"]},
             {id: 6, ops: ["move(1, 0) 1", "move(1, 1) 3"]},

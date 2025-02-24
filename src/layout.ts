@@ -46,6 +46,16 @@ function parseMove(op: string): {qubit: number, to: Location} | undefined {
   return undefined;
 }
 
+function parseGate(op: string): {gate: string, qubit: number, arg?: string} | undefined {
+  const match = op.match(/(\w+)\s*(\(.*\))? (\d+)/);
+  if (match) {
+    const gate = match[1];
+    const qubit = parseInt(match[3]);
+    const arg = match[2] ? match[2].substring(1, match[2].length - 2) : undefined;
+    return { gate, qubit, arg };
+  }
+}
+
 function TraceToPerStepLayout(trace: Trace): PerStepLayout {
   // TODO: Verify structuredClone works in Jupyter, VS Code WebViews, etc.
   // Note: Could add some validation for qubit indexes, don't move the same qubits twice in a step..
@@ -214,9 +224,11 @@ export class Layout {
         cx: `0`,
         cy: `0`,
         r: `2`,
-        transform: `translate(${x}, ${y})`,
         class: "minpage-qubit",
       });
+      // Animation sets the transform as a style attribute, not an element attribute.
+      // Also note, when animating the CSS it requires the 'px' length type (unlike the attribute).
+      circle.style.transform = `translate(${x}px, ${y}px)`;
       location[2] = circle;
       return circle;
     });
@@ -225,6 +237,7 @@ export class Layout {
   }
 
   renderGateOnQubit(qubit: number, gate: string, arg?: string) {
+    if (gate == "RESET") gate = "R";
     const [x,y] = this.getQubitCenter(qubit);
 
     const g = createSvgElements("g")[0];
@@ -305,18 +318,75 @@ export class Layout {
     }
   }
 
+  getLocationCenter(row: number, col: number) : [number, number] {
+    const x = col * qubitSize + qubitSize / 2;
+    const y = this.getQubitRowOffset(row) + qubitSize / 2;
+    return [x, y];
+  }
+
   getQubitCenter(qubit: number): [number, number] {
     if (this.qubits[qubit] == undefined) {
       throw "Qubit not found";
     }
 
     const [row, col] = this.qubits[qubit];
-    const x = col * qubitSize + qubitSize / 2;
-    const y = this.getQubitRowOffset(row) + qubitSize / 2;
-    return [x, y];
+    return this.getLocationCenter(row, col);
   }
 
   gotoStep(step: number) {
-    console.log("navigating to step ", step);
+    this.clearGates();
+    // When on step 0, just layout the qubits per index 0
+    // When on step 1, layout per index 0 then apply the gates/moves per index 0
+    // When on step 2, layout per index 1 then apply the gates/moves per index 1
+    // etc. until when on step n + 1, layout per index n and apply per index n
+    const qubitLocationIndex = step === 0 ? 0 : step - 1;
+
+    // Update all qubit locations
+    this.perStepLayout[qubitLocationIndex].qubits.forEach((loc, idx) => {
+      const elem = this.qubits[idx][2];
+      if (elem === undefined) {
+        throw "Invalid qubit index in step";
+      }
+      this.qubits[idx] = [loc[0], loc[1], elem]; // Update the location
+
+      // Get the offset for the location and move it there
+      const [x,y] = this.getQubitCenter(idx);
+      //elem.setAttribute("transform", `translate(${x}, ${y})`);
+      elem.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // Now apply the ops
+    if (step > 0) {
+      const ops = this.perStepLayout[qubitLocationIndex].ops;
+      ops.forEach(op => {
+        const move = parseMove(op);
+        if (move) {
+          // Apply the move animation
+          const [oldX, oldY] = this.getQubitCenter(move.qubit);
+          const [newX, newY] = this.getLocationCenter(move.to[0], move.to[1]);
+          const qubit = this.qubits[move.qubit][2];
+          if (!qubit) throw "Invalid qubit index";
+          qubit
+            .animate(
+              [
+                { transform: `translate(${oldX}px, ${oldY}px)` },
+                { transform: `translate(${newX}px, ${newY}px)` },
+              ],
+              { duration: 250, fill: "forwards", easing: "ease" }
+            )
+            .finished.then((anim) => {
+              anim.commitStyles();
+              anim.cancel();
+            });
+            // TODO: Check if you can/should cancel when scrubbing
+        } else {
+          // Wasn't a move, so render the gate
+          const gate = parseGate(op);
+          if (!gate) throw `Invalid gate: ${op}`;
+          const arg = gate.arg ? gate.arg.substring(0,4) : undefined;
+          this.renderGateOnQubit(gate.qubit, gate.gate.toUpperCase(), arg);
+        }
+      });
+    }
   }
 }

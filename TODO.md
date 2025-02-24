@@ -1,10 +1,11 @@
 # TODO
 
-- Navigate the layout on gotoStep
-- Draw the doublons firing and the measurements (lose / reload the qubit?)
+- Draw the doublons firing
+- Color MZ as red and Reset as green
 - Number the rows and columns
-- Draw a from/to line when qubits move
 - Wire up the play/pause controls
+- *MVP at this line*
+- Draw a from/to line when qubits move (and animate backwards if stepping backwards)
 - Fix the layout issues if initial size/scale is too large
 - Fix the qubit movement when != 2 readout zones
 - Figure out status line and popup info for qubit hovering
